@@ -1,20 +1,18 @@
-﻿using System.Globalization;
-using Irony.Parsing;
+﻿using Irony.Parsing;
+using QuasarLang.Interfaces;
 
 namespace QuasarLang.AST
 {
-    public class NumericLiteral : IVisitable, IExpression, ILiteral
+    public class StrLiteral : IVisitable, IExpression, ILiteral
     {
         public dynamic Value { get; set; }
         public NodeMetadata Metadata { get; }
 
-        public NumericLiteral(dynamic value, ParseTreeNode node)
+        public StrLiteral(string value, ParseTreeNode node)
         {
             Metadata = new NodeMetadata(node);
             Value = value;
-
         }
-        //
 
         public void Accept(IVisitor visitor)
         {
@@ -23,7 +21,7 @@ namespace QuasarLang.AST
 
         public string ToStringPretty()
         {
-            return $"{((decimal)Value).ToString(CultureInfo.InvariantCulture)}";
+            return Value.ToString();
         }
     }
 }

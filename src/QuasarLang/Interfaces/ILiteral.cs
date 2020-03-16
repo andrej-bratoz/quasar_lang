@@ -1,4 +1,4 @@
-﻿namespace QuasarLang
+﻿namespace QuasarLang.Interfaces
 {
     public interface ILiteral
     {

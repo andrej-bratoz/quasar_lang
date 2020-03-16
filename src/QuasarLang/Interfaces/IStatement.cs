@@ -1,4 +1,4 @@
-﻿namespace QuasarLang.AST
+﻿namespace QuasarLang.Interfaces
 {
     public interface IStatement
     {
