@@ -1,1 +1,1 @@
-# quasar_lang
+# Quasar Programming Language
