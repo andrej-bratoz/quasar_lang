@@ -40,6 +40,15 @@ namespace QuasarLang
         internal const string FuncDefineArgumentList = "FUNC_DEFINE_ARGUMENT_LIST";
         internal const string AssignStatement = "ASSIGN_STATEMENT";
         internal const string IfStmt = "IF_STMT";
+        internal const string BreakStmt = "BREAK_STMT";
+        internal const string ContinueStmt = "CONTINUE_STMT";
+        internal const string CompilationUnit = "COMPILATION_UNIT";
+        internal const string ReturnStatement = "RETURN_STATEMENT";
+        internal const string WhileStatement = "WHILE_STATEMENT";
+        internal const string ForStatement = "FOR_STATEMENT";
+        internal const string ForeachStatement = "FOREACH_STATEMENT";
+
+        internal const string ClassStatement = "CLAS_STATEMENT";
 
         public QuasarGrammar()
         {
@@ -50,6 +59,7 @@ namespace QuasarLang
             //
             var IntegerLiteral = new NumberLiteral(IntLiteral, NumberOptions.IntOnly | NumberOptions.AllowSign);
             var StringLiteral = new StringLiteral(QuasarGrammar.StringLiteral, "'",StringOptions.AllowsAllEscapes | StringOptions.AllowsLineBreak);
+            var UseLiteral = new StringLiteral("USE_LITERAL", "'",StringOptions.None);
             var EscapableStringLiteral = new StringLiteral(QuasarGrammar.EscapableStringLiteral, "\"");
             var BoolLiteral = new RegexBasedTerminal(QuasarGrammar.BoolLiteral, "true|false");
             var DecimalLiteral = new RegexBasedTerminal(QuasarGrammar.DecimalLiteral, "[+-]?([0-9]+M|[0-9]+\\.[0-9]+M)");
@@ -77,6 +87,17 @@ namespace QuasarLang
             var FuncDefineArgList = new NonTerminal(FuncDefineArgumentList);
             var AssignStatement = new NonTerminal(QuasarGrammar.AssignStatement);
             var IfStatement = new NonTerminal(IfStmt);
+            var ReturnStatement = new NonTerminal(QuasarGrammar.ReturnStatement);
+
+            var BreakStatement = new NonTerminal(BreakStmt);
+            var ContinueStatement = new NonTerminal(ContinueStmt);
+            var WhileStatement = new NonTerminal(QuasarGrammar.WhileStatement);
+            var ForStatement = new NonTerminal(QuasarGrammar.ForStatement);
+            var ForeachStatement = new NonTerminal(QuasarGrammar.ForeachStatement);
+            //
+            var ClassStatement = new NonTerminal(QuasarGrammar.ClassStatement);
+
+            var CompilationUnit = new NonTerminal(QuasarGrammar.CompilationUnit); 
 
             // EXPRESSIONS
 
@@ -104,28 +125,55 @@ namespace QuasarLang
             DictionaryMemberList.Rule = DictionaryMember | DictionaryMember + "," + DictionaryMemberList;
             DictionaryInitialize.Rule = "{" + DictionaryMemberList + "}";
             //
+           
+
+            // STATEMENTS
+
+            Statement.Rule = ImportStatement + ";" |
+                             FuncDefineStatement |
+                             AssignStatement + ";" |
+                             IfStatement |
+                             BreakStatement + ";" |
+                             ContinueStatement + ";" |
+                             ReturnStatement + ";" |
+                             WhileStatement |
+                             ForStatement |
+                             ForeachStatement |
+                             ClassStatement;
+
+            BreakStatement.Rule = ToTerm("break");
+            ContinueStatement.Rule = ToTerm("continue");
+            ReturnStatement.Rule = ToTerm("return") | "return" + Expression;
+
+            // while(a < 10)
+            WhileStatement.Rule = ToTerm("while") + "(" + Expression + ")" + "{" + StatementBlock + "}";
+            // for(i; i < 10; i=i+1)
+            ForStatement.Rule = ToTerm("for") + "(" + Identifier + ";" + Expression + ";" + AssignStatement + ")" + "{" + StatementBlock + "}";
+            // foreach(i in collection)
+            ForeachStatement.Rule = ToTerm("foreach") + "(" + Identifier + "in" + Expression + ")" + "{" + StatementBlock + "}";
+
             AssignStatement.Rule = "var" + Identifier + "=" + Expression |
                                    Identifier + "=" + Expression |
                                    Expression + "=" + Expression;
 
-            // STATEMENTS
-
-            Statement.Rule = ImportStatement        |
-                             FuncDefineStatement    |
-                             AssignStatement        |
-                             IfStatement;
-
             StatementBlock.Rule = Statement | Statement + StatementBlock | Empty;
-            ImportStatement.Rule = "import" + "(" + StringLiteral + ")";
+            ImportStatement.Rule = "use" + UseLiteral;
             FuncDefineArgList.Rule = Identifier | Identifier + "," + FuncDefineArgList;
             FuncDefineStatement.Rule = "func" + Identifier + "(" + ")" + "{" + StatementBlock + "}" | 
                                        "func" + Identifier + "(" + FuncDefineArgList +")" + "{" + StatementBlock + "}";
             //
             IfStatement.Rule = ToTerm("if") + "(" + Expression + ")" + Statement |
                                ToTerm("if") + "(" + Expression + ")" + "{" + StatementBlock + "}" |
-                               IfStatement + "else" + StatementBlock;
-            
+                               IfStatement + "else" + "{" + StatementBlock + "}" |
+                               IfStatement + "else" + IfStatement;
 
+            ClassStatement.Rule = "class" + Identifier + "{" + StatementBlock + "}";
+
+            CompilationUnit.Rule = StatementBlock;
+
+            Root = CompilationUnit;
+
+            MarkReservedWords("return", "new", "break", "continue", "use", "if", "else", "this", "class", "dto", "null", "while", "in");
 
 
             RegisterOperators(6, Associativity.Left, ".");

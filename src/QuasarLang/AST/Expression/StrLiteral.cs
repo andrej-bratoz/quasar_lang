@@ -1,10 +1,11 @@
 ﻿using Irony.Parsing;
 using QuasarLang.Interfaces;
 
-namespace QuasarLang.AST
+namespace QuasarLang.AST.Expression
 {
     public class StrLiteral : IVisitable, IExpression, ILiteral
     {
+        public int ScopeLevel { get; set; }
         public dynamic Value { get; set; }
         public NodeMetadata Metadata { get; }
 

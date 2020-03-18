@@ -1,4 +1,5 @@
 ﻿using QuasarLang.AST;
+using QuasarLang.AST.Expression;
 
 namespace QuasarLang.Interfaces
 {

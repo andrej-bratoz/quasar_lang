@@ -45,7 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AstBuilder.cs" />
-    <Compile Include="AST\NumericLiteral.cs" />
+    <Compile Include="AST\Expression\NumericLiteral.cs" />
+    <Compile Include="Compiler.cs" />
     <Compile Include="Interfaces\IStatement.cs" />
     <Compile Include="Interfaces\IExpression.cs" />
     <Compile Include="Interfaces\ILiteral.cs" />
@@ -54,11 +55,13 @@
     <Compile Include="NodeMetadata.cs" />
     <Compile Include="QuasarGrammar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AST\StrLiteral.cs" />
+    <Compile Include="AST\Expression\StrLiteral.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="AST\Statement\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

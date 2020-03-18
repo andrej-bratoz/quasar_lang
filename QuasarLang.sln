@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuasarLang", "src\QuasarLan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuasarLang.ConsoleApp", "src\QuasarLang.ConsoleApp\QuasarLang.ConsoleApp.csproj", "{B45F0566-8FFE-413E-BD2B-C85850DB070C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuasarLang.Tests", "test\QuasarLang.Tests\QuasarLang.Tests.csproj", "{F58E0CA0-51DE-48A5-BF41-C21566F3B95F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{B45F0566-8FFE-413E-BD2B-C85850DB070C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B45F0566-8FFE-413E-BD2B-C85850DB070C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B45F0566-8FFE-413E-BD2B-C85850DB070C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F58E0CA0-51DE-48A5-BF41-C21566F3B95F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F58E0CA0-51DE-48A5-BF41-C21566F3B95F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F58E0CA0-51DE-48A5-BF41-C21566F3B95F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F58E0CA0-51DE-48A5-BF41-C21566F3B95F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
